@@ -398,34 +398,11 @@ class Phonemizer:
             # TODO(kan-bayashi): space replacement should be dealt in PhonemeTokenizer
             return [c.replace(" ", "<space>") for c in tokens]
 
+
 class is_g2p:
-    def __init__(self, no_space: bool = False, dialect: str = 'standard', syllabify: bool = True, word_sep: str = ",", use_dict: bool = True):
-        self.dialect = dialect
-        self.syllabify = syllabify
-        self.word_sep = word_sep
-        self.use_dict = use_dict
-        from ice_g2p.transcriber import Transcriber
-        self.transcriber = Transcriber(use_dict=self.use_dict, use_syll=self.syllabify)
-
-    def process_string(self, input_str: str) -> str:
-        transcribed = self.transcriber.transcribe(input_str, use_syll=self.syllabify, use_dict=self.use_dict, word_sep=self.word_sep).split()
-        return transcribed
-
-
-    def __call__(self, text) -> List[str]:
-        phones = self.process_string(input_str=text)
-        return phones
-
-class IsG2p:  # pylint: disable=too-few-public-methods
-    """Minimal wrapper for https://github.com/grammatek/ice-g2p
-
-    The g2p module uses a Bi-LSTM model along with
-    a pronunciation dictionary to generate phonemization
-    Unfortunately does not support multi-thread phonemization as of yet
-    """
-
     def __init__(
         self,
+        no_space: bool = False,
         dialect: str = "standard",
         syllabify: bool = True,
         word_sep: str = ",",
@@ -433,19 +410,24 @@ class IsG2p:  # pylint: disable=too-few-public-methods
     ):
         self.dialect = dialect
         self.syllabify = syllabify
+        self.word_sep = word_sep
         self.use_dict = use_dict
         from ice_g2p.transcriber import Transcriber
 
-        self.transcriber = Transcriber(
+        self.transcriber = Transcriber(use_dict=self.use_dict, use_syll=self.syllabify)
+
+    def process_string(self, input_str: str) -> str:
+        transcribed = self.transcriber.transcribe(
+            input_str,
+            use_syll=self.syllabify,
             use_dict=self.use_dict,
-            syllab_symbol=".",
-            stress_label=True,
-            word_sep=word_sep,
-            lang_detect=True,
-        )
+            word_sep=self.word_sep,
+        ).split()
+        return transcribed
 
     def __call__(self, text) -> List[str]:
-        return self.transcriber.transcribe(text).split()
+        phones = self.process_string(input_str=text)
+        return phones
 
 
 class PhonemeTokenizer(AbsTokenizer):
