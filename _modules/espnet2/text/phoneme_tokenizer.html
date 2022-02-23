@@ -483,23 +483,37 @@
             <span class="c1"># TODO(kan-bayashi): space replacement should be dealt in PhonemeTokenizer</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;space&gt;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span></div>
 
+
 <div class="viewcode-block" id="is_g2p"><a class="viewcode-back" href="../../../_gen/espnet2.text.html#espnet2.text.phoneme_tokenizer.is_g2p">[docs]</a><span class="k">class</span> <span class="nc">is_g2p</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">no_space</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dialect</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;standard&#39;</span><span class="p">,</span> <span class="n">syllabify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">word_sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">use_dict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">no_space</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">dialect</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;standard&quot;</span><span class="p">,</span>
+        <span class="n">syllabify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">word_sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span>
+        <span class="n">use_dict</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dialect</span> <span class="o">=</span> <span class="n">dialect</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">syllabify</span> <span class="o">=</span> <span class="n">syllabify</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">word_sep</span> <span class="o">=</span> <span class="n">word_sep</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">use_dict</span> <span class="o">=</span> <span class="n">use_dict</span>
         <span class="kn">from</span> <span class="nn">ice_g2p.transcriber</span> <span class="kn">import</span> <span class="n">Transcriber</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">transcriber</span> <span class="o">=</span> <span class="n">Transcriber</span><span class="p">(</span><span class="n">use_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">use_dict</span><span class="p">,</span> <span class="n">use_syll</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">syllabify</span><span class="p">)</span>
 
 <div class="viewcode-block" id="is_g2p.process_string"><a class="viewcode-back" href="../../../_gen/espnet2.text.html#espnet2.text.phoneme_tokenizer.is_g2p.process_string">[docs]</a>    <span class="k">def</span> <span class="nf">process_string</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="n">transcribed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcriber</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span><span class="n">input_str</span><span class="p">,</span> <span class="n">use_syll</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">syllabify</span><span class="p">,</span> <span class="n">use_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">use_dict</span><span class="p">,</span> <span class="n">word_sep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">word_sep</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">transcribed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transcriber</span><span class="o">.</span><span class="n">transcribe</span><span class="p">(</span>
+            <span class="n">input_str</span><span class="p">,</span>
+            <span class="n">use_syll</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">syllabify</span><span class="p">,</span>
+            <span class="n">use_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">use_dict</span><span class="p">,</span>
+            <span class="n">word_sep</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">word_sep</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">transcribed</span></div>
-
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="n">phones</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_string</span><span class="p">(</span><span class="n">input_str</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">phones</span></div>
+
 
 <div class="viewcode-block" id="PhonemeTokenizer"><a class="viewcode-back" href="../../../_gen/espnet2.text.html#espnet2.text.phoneme_tokenizer.PhonemeTokenizer">[docs]</a><span class="k">class</span> <span class="nc">PhonemeTokenizer</span><span class="p">(</span><span class="n">AbsTokenizer</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
