@@ -168,7 +168,11 @@ MUCS_SUBTASK1=downloads
 MUCS_SUBTASK2=downloads
 GAMAYUN=downloads
 IWSLT21LR=downloads/iwslt21
-TALROMUR=/work/gunnar/talromur
+JDCINAL=downloads
+GRABO=downloads
+WENETSPEECH=
+SPEECHCOMMANDS=downloads
+TALROMUR=downloads
 
 # For only JHU environment
 if [[ "$(hostname -d)" == clsp.jhu.edu ]]; then
