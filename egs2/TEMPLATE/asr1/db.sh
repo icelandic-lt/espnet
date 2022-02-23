@@ -173,6 +173,7 @@ JDCINAL=downloads
 GRABO=downloads
 WENETSPEECH=
 SPEECHCOMMANDS=downloads
+<<<<<<< HEAD
 TOTONAC=downloads
 PRIMEWORDS_CHINESE=downloads
 SEAME=
@@ -253,6 +254,9 @@ fi
 =======
 TALROMUR=/work/gunnar/talromur
 >>>>>>> 07d151cce (add talromur to db.sh)
+=======
+TALROMUR=downloads
+>>>>>>> 2f2ed4bfd (Add talromur recipe)
 
 # For only JHU environment
 if [[ "$(hostname -d)" == clsp.jhu.edu ]]; then

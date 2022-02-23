@@ -9,7 +9,7 @@ fi
 
 expdir="exp/${speaker_id}"
 
-# Use the above tacotron2 model as the teacher
+# Use the previously trained tacotron2 model as the teacher
 ./run.sh \
     --ngpu 1 \
     --stage 7 \
@@ -22,17 +22,17 @@ expdir="exp/${speaker_id}"
     --tts_exp exp_${speaker_id}/tts_train_tacotron2_raw_phn_none \
     --inference_args "--use_teacher_forcing true"
 
-# # Run fastspeech2 training
-./run.sh --stage 5 \
+# Run fastspeech2 training
+./run.sh \
     --ngpu 2 \
     --train_set train_${speaker_id}_phn \
     --valid_set dev_${speaker_id}_phn \
     --test_sets "dev_${speaker_id}_phn eval1_${speaker_id}_phn" \
     --srctexts "data/train_${speaker_id}_phn/text" \
     --expdir "$expdir" \
+    --stage 5 \
     --g2p none \
     --cleaner none \
-    --train_config conf/tuning/train_fastspeech2.yaml \
+    --train_config ./conf/tuning/train_conformer_fastspeech2.yaml \
     --teacher_dumpdir exp_${speaker_id}/tts_train_tacotron2_raw_phn_none/decode_use_teacher_forcingtrue_train.loss.ave \
     --tts_stats_dir exp_${speaker_id}/tts_train_tacotron2_raw_phn_none/decode_use_teacher_forcingtrue_train.loss.ave/stats
-    --write_collected_feats true
