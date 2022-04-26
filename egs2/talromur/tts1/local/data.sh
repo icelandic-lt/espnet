@@ -43,11 +43,10 @@ train_set=train_${speaker_id}
 train_dev=dev_${speaker_id}
 eval_set=eval1_${speaker_id}
 
-# TODO(G-Thor) implement local/data_download.sh
-# if [ ${stage} -le -1 ] && [ ${stop_stage} -ge -1 ]; then
-#     log "stage -1: Data Download"
-#     local/data_download.sh "${db_root}"
-# fi
+if [ ${stage} -le -1 ] && [ ${stop_stage} -ge -1 ]; then
+    log "stage -1: Data Download"
+    local/data_download.sh "${db_root}"
+fi
 
 if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
     log "stage 0: Data Preparation"
@@ -93,13 +92,13 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
 
     # make evaluation and devlopment sets
     paste -d " " \
-        <(cut -f 1 < ${db_root}/split/${speaker_id}_val.txt | sed "s/^/${speaker_id}_/") \
+        <(cut -f 1 < ${db_root}/split/${speaker_id}_val.txt) \
         >> val_utts.txt
     paste -d " " \
-        <(cut -f 1 < ${db_root}/split/${speaker_id}_test.txt | sed "s/^/${speaker_id}_/") \
+        <(cut -f 1 < ${db_root}/split/${speaker_id}_test.txt) \
         >> test_utts.txt
     paste -d " " \
-        <(cut -f 1 < ${db_root}/split/${speaker_id}_train.txt | sed "s/^/${speaker_id}_/") \
+        <(cut -f 1 < ${db_root}/split/${speaker_id}_train.txt) \
         >> train_utts.txt
 
     utils/subset_data_dir.sh --utt-list val_utts.txt data/${full_set} data/${train_dev}
