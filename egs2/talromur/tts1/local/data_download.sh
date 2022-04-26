@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2022 Gunnar Thor Örnólfsson
+# Copyright 2019 Tomoki Hayashi
 #  Apache 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
 
 download_dir=$1
