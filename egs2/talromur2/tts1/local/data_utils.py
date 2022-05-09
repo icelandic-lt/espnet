@@ -2,12 +2,11 @@
 
 import os
 import sys
-import tempfile
-import zipfile
 from dataclasses import dataclass
+import zipfile
+import tempfile
+from typing import Optional, List, Dict
 from pathlib import Path
-from typing import Dict, List, Optional
-
 import numpy as np
 
 
@@ -73,7 +72,7 @@ def main():
     except ImportError:
         raise ImportError("Please install TextGridTools: pip install tgt")
     args = sys.argv
-    silence_phones: List[str] = ("sil", "sp", "spn", "")
+    silence_phones: List[str] = ("sil", "sp", "spn")
     alignment_path = args[1]
     wav_scp_path = args[2]
 
