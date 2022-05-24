@@ -127,7 +127,6 @@ MUCS_SUBTASK1=downloads
 MUCS_SUBTASK2=downloads
 GAMAYUN=downloads
 IWSLT21LR=downloads/iwslt21
-<<<<<<< HEAD
 JDCINAL=downloads
 GRABO=downloads
 WENETSPEECH=
