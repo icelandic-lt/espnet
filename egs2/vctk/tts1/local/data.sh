@@ -31,7 +31,7 @@ if [ -z "${VCTK}" ]; then
 fi
 db_root=${VCTK}
 
-train_set=tr_no_dev
+train_set=train
 dev_set=dev
 eval_set=eval1
 

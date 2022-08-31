@@ -8,9 +8,9 @@
 
 num_dev=5
 num_eval=5
-train_set="tr_no_dev"
-dev_set="dev"
-eval_set="eval1"
+train_set="train_all"
+dev_set="dev_all"
+eval_set="eval1_all"
 
 # shellcheck disable=SC1091
 . utils/parse_options.sh || exit 1;
