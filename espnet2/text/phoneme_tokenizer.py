@@ -408,11 +408,12 @@ class IsG2p:  # pylint: disable=too-few-public-methods
     Unfortunately does not support multi-thread phonemization as of yet
     """
     def __init__(
-            self,
-            dialect: str = "standard",
-            syllabify: bool = True,
-            word_sep: str = ",",
-            use_dict: bool = True,
+        self,
+        dialect: str = "standard",
+        syllabify: bool = False,
+        word_sep: str = "",  # "<wb>"
+        use_dict: bool = True,
+        appendix: str = "dump/prondict_appendix.txt",
     ):
         self.dialect = dialect
         self.syllabify = syllabify
@@ -421,11 +422,22 @@ class IsG2p:  # pylint: disable=too-few-public-methods
 
         self.transcriber = Transcriber(
             use_dict=self.use_dict,
-            syllab_symbol='.',
+            syllab_symbol=("<sb>" if self.syllabify else ""),
             stress_label=True,
             word_sep=word_sep,
             lang_detect=True
         )
+
+        if appendix:
+            try:
+                with open(appendix, "r", encoding="utf8") as f:
+                    appendix_dict = {x.split("\t")[0]: x.split("\t")[1].strip()
+                                     for x
+                                     in f.readlines()}
+            except FileNotFoundError:
+                warnings.warn(f"{appendix} doesn't exist.")
+                appendix_dict = {}
+            self.transcriber.set_custom_dict(appendix_dict)
 
     def __call__(self, text) -> List[str]:
         return self.transcriber.transcribe(text).split()
