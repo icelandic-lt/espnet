@@ -58,3 +58,14 @@ espnet2.iterators.sequence_iter_factory
     :undoc-members:
     :show-inheritance:
 
+
+.. _espnet2.iterators.category_iter_factory:
+
+espnet2.iterators.category_iter_factory
+---------------------------------------
+
+.. automodule:: espnet2.iterators.category_iter_factory
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
