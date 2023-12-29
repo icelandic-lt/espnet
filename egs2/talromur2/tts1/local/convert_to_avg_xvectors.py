@@ -85,17 +85,46 @@ if args.spk_id and (args.spk_id not in spk_xvector_paths):
     sys.stderr.flush()
     exit(1)
 
+
+utt2spk = {}
+if args.utt2spk:
+    if os.path.exists(args.utt2spk):
+        print("Loading utt2spk file...")
+        with open(args.utt2spk) as f:
+            for line in f.readlines():
+                utt, spk = line.split()
+                utt2spk[utt] = spk
+    else:
+        sys.stderr.write(
+            f"Error: provided --utt2spk file ({args.utt2spk}) does not exist."
+        )
+        sys.stderr.write(" Exiting...\n")
+        sys.stderr.flush()
+        exit(1)
+
 print("Backing up xvector file...")
 print(os.path.dirname(args.xvector_path))
 shutil.copy(
     args.xvector_path, f"{os.path.dirname(args.xvector_path)}/xvector.scp.backup"
 )
 
+
 utt2xvector = []
 with open(args.xvector_path) as f:
     for line in f.readlines():
         utt, xvector = line.split()
-        utt2xvector.append((utt, spk_xvector_paths[args.spk_id]))
+        if args.spk_id:
+            spk_id = args.spk_id
+        elif args.utt2spk and (utt in utt2spk):
+            spk_id = utt2spk[utt]
+        else:
+            sys.stderr.write(
+                f"Error: spk_id not provided and utt2spk file does not contain {utt}."
+            )
+            sys.stderr.write(" Exiting...\n")
+            sys.stderr.flush()
+            exit(1)
+        utt2xvector.append((utt, spk_xvector_paths[spk_id]))
 
 with open(args.xvector_path, "w") as f:
     for utt, xvector in utt2xvector:

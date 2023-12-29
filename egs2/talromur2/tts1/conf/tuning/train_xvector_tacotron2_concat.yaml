@@ -31,7 +31,7 @@ tts_conf:                        # keyword arguments for the selected model
     use_concate: true            # whether to concatenate encoder embedding with decoder outputs
     use_residual: false          # whether to use residual connection in encoder
     spk_embed_dim: 512              # dimension of speaker embedding
-    spk_embed_integration_type: add # how to integrate speaker embedding
+    spk_embed_integration_type: concat # how to integrate speaker embedding
     dropout_rate: 0.5            # dropout rate
     zoneout_rate: 0.1            # zoneout rate
     reduction_factor: 1          # reduction factor
