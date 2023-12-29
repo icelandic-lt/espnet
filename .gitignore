@@ -88,7 +88,12 @@ tools/ice-g2p
 tools/fairseq
 tools/RawNet
 tools/._*
-tools/anaconda
 tools/ice-g2p*
 tools/fairseq*
 tools/featbin*
+tools/Miniconda*
+tools/miniconda
+tools/ffmpeg-*-static
+tools/ffmpeg-release
+tools/ffmpeg-release-*.tar.xz
+tools/Miniconda3-latest-*.sh

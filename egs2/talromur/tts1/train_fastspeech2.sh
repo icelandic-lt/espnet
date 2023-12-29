@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 speaker_id=$1
 
@@ -9,7 +9,7 @@ fi
 
 expdir="exp/${speaker_id}"
 
-# Use the above tacotron2 model as the teacher
+# Use the previously trained tacotron2 model as the teacher
 ./run.sh \
     --ngpu 1 \
     --stage 7 \

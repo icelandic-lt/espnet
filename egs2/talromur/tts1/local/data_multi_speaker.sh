@@ -16,13 +16,6 @@ stop_stage=2
 
 . utils/parse_options.sh
 
-# if [ $# -ne 1 ]; then
-#     log "Error: Only speaker id is required. It should be one of the values [a, b, c, d, e, f, g, h]"
-#     exit 2
-# fi
-
-# speaker_id=$1
-
 . ./path.sh || exit 1
 . ./cmd.sh || exit 1
 . ./db.sh || exit 1
@@ -79,7 +72,7 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
         spk_id=$(basename $(dirname $(dirname ${filepath})))
         filename=$(basename $filepath)
         if [ ! -e data/alignments/${spk_id}_$filename ]; then
-            ln -s $filepath data/alignments/${spk_id}_$filename 
+            ln -s $filepath data/alignments/${spk_id}_$filename
         fi
     done
 

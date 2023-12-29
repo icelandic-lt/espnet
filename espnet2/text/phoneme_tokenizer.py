@@ -399,14 +399,14 @@ class Phonemizer:
             return [c.replace(" ", "<space>") for c in tokens]
 
 
-class IsG2p:  # pylint: disable=too-few-public-methods  
-    """
-    Minimal wrapper for https://github.com/grammatek/ice-g2p
+class IsG2p:  # pylint: disable=too-few-public-methods
+    """Minimal wrapper for https://github.com/grammatek/ice-g2p
+
     The g2p module uses a Bi-LSTM model along with
     a pronunciation dictionary to generate phonemization
-
     Unfortunately does not support multi-thread phonemization as of yet
     """
+
     def __init__(
         self,
         dialect: str = "standard",
@@ -425,7 +425,7 @@ class IsG2p:  # pylint: disable=too-few-public-methods
             syllab_symbol=("<sb>" if self.syllabify else ""),
             stress_label=True,
             word_sep=word_sep,
-            lang_detect=True
+            lang_detect=True,
         )
 
         if appendix:

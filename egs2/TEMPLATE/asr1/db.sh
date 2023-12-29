@@ -182,9 +182,34 @@ MALAYALAM=downloads
 ST_CMDS=downloads
 MS_INDIC_IS18=
 MARATHI=downloads
+MLS=downloads
+VOXPOPULI=downloads
 HARPERVALLEY=downloads
 TALROMUR=downloads
 TALROMUR2=downloads
+DCASE=
+TEDX_SPANISH=downloads
+IAM=downloads
+OFUTON=
+OPENCPOP=
+M_AILABS=downloads
+CATSLU=downloads
+ELRA_E0024=
+ELRA_S0272=
+ELRA_S0371=
+M4SINGER=
+ONIKU=
+PJS=
+AMEBOSHI=
+ITAKO=
+NATSUME=
+KIRITAN=
+NAMINE=
+KATHBATH=downloads
+GRAMVAANI=downloads
+SPRING_INX=downloads
+VOXCELEB=
+KSPONSPEECH=
 
 # For only CMU TIR environment
 if [[ "$(hostname)" == tir* ]]; then
@@ -220,6 +245,9 @@ if [[ "$(hostname)" == tir* ]]; then
     FISHER_CALLHOME_SPANISH=/projects/tir5/data/speech_corpora/fisher_callhome_spanish
     DSING=/projects/tir5/data/speech_corpora/sing_300x30x2
     MS_INDIC_IS18=/projects/tir6/general/cnariset/corpora/microsoft_speech_corpus_indian_languages
+    AISHELL=/projects/tir5/data/speech_corpora/Aishell
+    LIBRISPEECH=/projects/tir5/data/speech_corpora/LibriSpeech
+    SLURP=/projects/tir5/data/speech_corpora/SLURP
 fi
 
 # For only JHU environment

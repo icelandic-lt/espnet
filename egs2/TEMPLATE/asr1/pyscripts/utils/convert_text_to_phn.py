@@ -7,11 +7,10 @@
 
 import argparse
 import codecs
-from tqdm import tqdm
 import contextlib
 
-from joblib import delayed
-from joblib import Parallel, parallel
+from joblib import Parallel, delayed, parallel
+from tqdm import tqdm
 
 from espnet2.text.cleaner import TextCleaner
 from espnet2.text.phoneme_tokenizer import PhonemeTokenizer
@@ -36,9 +35,7 @@ def main():
     text = {line.split()[0]: " ".join(line.split()[1:]) for line in lines}
     if cleaner is not None:
         text = {k: cleaner(v) for k, v in text.items()}
-    with tqdm_joblib(
-        tqdm(total=len(text.values()), desc="Phonemizing")
-    ) as progress_bar:
+    with tqdm_joblib(tqdm(total=len(text.values()), desc="Phonemizing")):
         phns_list = Parallel(n_jobs=args.nj)(
             [
                 delayed(phoneme_tokenizer.text2tokens)(sentence)
@@ -52,9 +49,11 @@ def main():
 
 @contextlib.contextmanager
 def tqdm_joblib(tqdm_object):
-    """
-    Context manager to patch joblib to report
-    into tqdm progress bar given as argument
+    """Patch joblib to report into tqdm progress bar given as argument.
+
+    Reference:
+        https://stackoverflow.com/questions/24983493
+
     """
 
     class TqdmBatchCompletionCallback(parallel.BatchCompletionCallBack):
