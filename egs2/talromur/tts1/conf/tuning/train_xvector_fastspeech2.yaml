@@ -57,6 +57,8 @@ tts_conf:             # keyword arguments for the selected model
     energy_embed_kernel_size: 1                # kernel size of conv embedding layer for energy
     energy_embed_dropout: 0.0                  # dropout rate after conv embedding layer for energy
     stop_gradient_from_energy_predictor: false # whether to stop the gradient from energy predictor to encoder
+    spk_embed_dim: 512                # dimension of speaker embedding
+    spk_embed_integration_type: add   # how to integrate speaker embedding
 
 # extra module for additional inputs
 pitch_extract: dio           # pitch extractor type
@@ -79,11 +81,11 @@ scheduler_conf:        # keyword arguments for selected scheduler
 #                OTHER TRAINING SETTING                  #
 ##########################################################
 num_iters_per_epoch: 800  # number of iterations per epoch
-max_epoch: 200           # number of epochs
+max_epoch: 500           # number of epochs
 grad_clip: 1.0            # gradient clipping norm
 grad_noise: false         # whether to use gradient noise injection
 accum_grad: 8             # gradient accumulation
-batch_bins: 2500000       # batch bins (feats_type=raw)
+batch_bins: 4500000       # batch bins (feats_type=raw)
 batch_type: numel         # how to make batch
 sort_in_batch: descending # how to sort data in making batch
 sort_batch: descending    # how to sort created batches

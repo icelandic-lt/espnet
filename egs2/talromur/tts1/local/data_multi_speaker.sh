@@ -35,7 +35,6 @@ db_root=${TALROMUR}
 
 full_set=full_all
 train_set=train_all
-deveval_set=deveval_all
 train_dev=dev_all
 eval_set=eval1_all
 
@@ -84,9 +83,9 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
         fi
     done
 
-    # Trim leading and trailing silences from audio using sox
-    echo "Trimming audio"
-    python local/data_utils.py data/alignments ${scp}
+    # # Trim leading and trailing silences from audio using sox
+    # echo "Trimming audio"
+    # python local/data_utils.py data/alignments ${scp}
 
     # make text usign the original text
     # cleaning and phoneme conversion are performed on-the-fly during the training

@@ -12,7 +12,7 @@ log() {
 SECONDS=0
 
 stage=1
-stop_stage=2
+stop_stage=1
 
 . utils/parse_options.sh
 
@@ -38,10 +38,10 @@ if [ -z "${TALROMUR}" ]; then
 fi
 db_root=${TALROMUR}
 
-full_set=full_${speaker_id}
-train_set=train_${speaker_id}
-train_dev=dev_${speaker_id}
-eval_set=eval1_${speaker_id}
+full_set=full_mfa_${speaker_id}
+train_set=train_mfa_${speaker_id}
+train_dev=dev_mfa_${speaker_id}
+eval_set=eval1_mfa_${speaker_id}
 
 if [ ${stage} -le -1 ] && [ ${stop_stage} -ge -1 ]; then
     log "stage -1: Data Download"
@@ -69,27 +69,50 @@ if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
         echo "${id} ${filename}" >> ${scp}
         echo "${id} ${speaker_id}" >> ${utt2spk}
     done
+
     utils/utt2spk_to_spk2utt.pl ${utt2spk} > ${spk2utt}
 
-    # No longer necessary as inputs are prealigned and trimmed with 100ms leading and trailing silences
-    # # Trim leading and trailing silences from audio using sox
-    # python local/data_utils.py ${db_root}/alignments/${speaker_id}/audio ${scp}
-
-    # make text usign the original text
-    # cleaning and phoneme conversion are performed on-the-fly during the training
+    # make text using the original text
     paste -d " " \
         <(cut -f 1 < ${db_root}/${speaker_id}/index.tsv) \
         <(cut -f 4 < ${db_root}/${speaker_id}/index.tsv) \
         >> ${text}
 
+    utils/fix_data_dir.sh data/${full_set}
     utils/validate_data_dir.sh --no-feats data/${full_set}
 
     # Run g2p on the data directory, generating the required pronunciations in the appendix file.
-    ./local/dump_tts_prons.py --full-set ${full_set} --dump-transcripts --current-appendix ./dump/prondict_appendix.txt
+    ./local/dump_tts_prons.py \
+        --full-set ${full_set} \
+        --dump-transcripts \
+        --current-appendix ./dump/prondict_appendix.txt
 fi
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
-    log "stage 2: utils/subset_data_dir.sh"
+    log "stage 2: generate durations and text from mfa alignment"
+
+    # Note that we need the durations file to be called utt2dur so it is handled 
+    # properly by subset_data_dir.sh in the next step
+    python ./pyscripts/utils/mfa_format.py durations \
+        --corpus_dir ${db_root}/${speaker_id}/ \
+        --textgrid_dir ${db_root}/alignments_json/${speaker_id}/ \
+        --durations_path ./data/${full_set}/utt2dur \
+        --train_text_path ./data/${full_set}/text
+    
+    python ./local/convert_ipa_to_sampa.py \
+        --input-textfile ./data/${full_set}/text \
+        --output-textfile ./data/${full_set}/text_sampa
+
+
+    mv ./data/${full_set}/text ./data/${full_set}/text_ipa
+    mv ./data/${full_set}/text_sampa ./data/${full_set}/text
+
+    log "finished generating mfa alignment text and duration files"
+fi
+
+
+if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
+    log "stage 3: utils/subset_data_dir.sh"
     if [ -e val_utts.txt ]; then rm val_utts.txt; fi
     if [ -e test_utts.txt ]; then rm test_utts.txt; fi
     if [ -e train_utts.txt ]; then rm train_utts.txt; fi
@@ -110,6 +133,13 @@ if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
     utils/subset_data_dir.sh --utt-list train_utts.txt data/${full_set} data/${train_set}
 
     rm val_utts.txt test_utts.txt train_utts.txt
+
+    # rename utt2dur files to reflect tts.sh expectation
+    mv data/${train_set}/utt2dur data/${train_set}/durations
+    mv data/${eval_set}/utt2dur data/${eval_set}/durations
+    mv data/${train_dev}/utt2dur data/${train_dev}/durations
+
 fi
+
 
 log "Successfully finished. [elapsed=${SECONDS}s]"
